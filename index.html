@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Island Poster – Terms &amp; Privacy</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1f1f1f}
+  h1{font-size:1.8rem} h2{margin-top:2rem;font-size:1.3rem}
+  nav a{margin-right:16px} code{background:#f3f3f3;padding:2px 6px;border-radius:4px}
+  .box{background:#f7f7f7;border-radius:10px;padding:16px;margin-top:1rem}
+</style>
+</head>
+<body>
+<h1>Island Poster</h1>
+<p>Island Poster is a private, personal tool that publishes self-made animated story videos to the owner's own TikTok account(s) on a schedule. It is not offered to the public and has no users other than its owner.</p>
+<nav><a href="#terms">Terms of Service</a><a href="#privacy">Privacy Policy</a><a href="#callback">Authorization callback</a></nav>
+
+<h2 id="terms">Terms of Service</h2>
+<p>Last updated: 7 November 2026</p>
+<ol>
+  <li>Island Poster ("the app") is operated by its owner for personal use only. No accounts are created for third parties and no service is provided to the public.</li>
+  <li>The app uses the TikTok Content Posting API and Login Kit solely to upload and publish videos created by the owner to TikTok accounts owned by the owner.</li>
+  <li>All content published through the app is created by the owner and labeled as AI-generated where required by TikTok's policies.</li>
+  <li>The app complies with the <a href="https://www.tiktok.com/legal/tik-tok-developer-terms-of-service">TikTok Developer Terms of Service</a> and TikTok's Community Guidelines.</li>
+  <li>The app is provided "as is" without warranty of any kind.</li>
+</ol>
+
+<h2 id="privacy">Privacy Policy</h2>
+<p>Last updated: 7 November 2026</p>
+<ul>
+  <li><strong>Data collected:</strong> After the owner authorizes the app with TikTok, the app stores an access token, a refresh token and the basic profile information of the owner's own TikTok account (open ID, display name, avatar). No data about other TikTok users is collected.</li>
+  <li><strong>Purpose:</strong> The tokens are used exclusively to upload and publish the owner's videos and to read the owner's own video statistics and comments.</li>
+  <li><strong>Storage:</strong> Data is stored in the owner's private workspace and is not shared with, sold to or transferred to any third party.</li>
+  <li><strong>Retention:</strong> Tokens are kept until the owner revokes the app's access in TikTok's settings or deletes them, whichever comes first.</li>
+  <li><strong>Contact:</strong> Questions about this policy can be sent to the owner at the e-mail address registered with the TikTok developer account.</li>
+</ul>
+
+<h2 id="callback">Authorization callback</h2>
+<div class="box">
+  <p>This page is also the redirect target for TikTok authorization. If you arrived here after clicking "Authorize" on TikTok, copy the complete address from your browser's address bar and paste it into the chat.</p>
+  <p id="code"></p>
+</div>
+<script>
+  try{
+    var p=new URLSearchParams(location.search);
+    if(p.get('code')){document.getElementById('code').innerHTML='Authorization code received: <code>'+p.get('code').replace(/[<>&]/g,'')+'</code>';}
+    else if(p.get('error')){document.getElementById('code').textContent='Authorization was declined: '+p.get('error');}
+  }catch(e){}
+</script>
+</body>
+</html>
