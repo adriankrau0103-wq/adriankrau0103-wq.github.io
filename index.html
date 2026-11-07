@@ -70,7 +70,7 @@
   try{
     var p = new URLSearchParams(location.search);
     var s = document.getElementById('status');
-    if (p.get('code')) { s.innerHTML = '<span class="ok">✓ Authorization received.</span> Step 2 – the owner pastes this page\'s address into the scheduler, which exchanges the code for an access token and starts publishing on schedule.'; }
+    if (p.get('code')) { document.getElementById('connectBtn').style.display='none'; s.innerHTML = '<span class="ok">✓ Authorization received – you are done. You can close this page.</span>'; }
     else if (p.get('error')) { s.textContent = 'Authorization was declined: ' + p.get('error'); }
   }catch(e){}
 </script>
