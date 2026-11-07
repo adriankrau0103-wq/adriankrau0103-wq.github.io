@@ -3,18 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Island Poster – Terms &amp; Privacy</title>
+<title>Island Poster</title>
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1f1f1f}
-  h1{font-size:1.8rem} h2{margin-top:2rem;font-size:1.3rem}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1f1f1f}
+  h1{font-size:2rem;display:flex;align-items:center;gap:14px} h1 img{width:56px;height:56px;border-radius:50%}
+  h2{margin-top:2.2rem;font-size:1.3rem}
   nav a{margin-right:16px} code{background:#f3f3f3;padding:2px 6px;border-radius:4px}
-  .box{background:#f7f7f7;border-radius:10px;padding:16px;margin-top:1rem}
+  .card{background:#f7f7f7;border-radius:12px;padding:20px;margin-top:1rem}
+  .btn{display:inline-block;background:#fe2c55;color:#fff;font-weight:700;padding:12px 22px;border-radius:8px;text-decoration:none}
+  .steps li{margin-bottom:6px}
+  .ok{color:#15803d;font-weight:700}
 </style>
 </head>
 <body>
-<h1>Island Poster</h1>
-<p>Island Poster is a private, personal tool that publishes self-made animated story videos to the owner's own TikTok account(s) on a schedule. It is not offered to the public and has no users other than its owner.</p>
-<nav><a href="#terms">Terms of Service</a><a href="#privacy">Privacy Policy</a><a href="#callback">Authorization callback</a></nav>
+<h1><img src="icon.png" alt=""> Island Poster</h1>
+<p>Island Poster is a private, single-user tool. Its owner creates short animated island story videos and the tool publishes them to the owner's own TikTok account on a schedule. It is not offered to the public.</p>
+<nav><a href="#connect">Connect</a><a href="#how">How it works</a><a href="#terms">Terms of Service</a><a href="#privacy">Privacy Policy</a></nav>
+
+<h2 id="connect">Connect your TikTok account</h2>
+<div class="card">
+  <p>Step 1 – authorize Island Poster for your own TikTok account (Login Kit). You will be sent to TikTok, asked to approve the permissions, and returned to this page.</p>
+  <p><a class="btn" id="connectBtn" href="#">Connect with TikTok</a></p>
+  <p id="status"></p>
+</div>
+
+<h2 id="how">How it works</h2>
+<ol class="steps">
+  <li><strong>Login Kit</strong> (<code>user.info.basic</code>): the owner authorizes the tool once; the display name and avatar are shown here to confirm which account is connected.</li>
+  <li><strong>Content Posting API – Direct Post</strong> (<code>video.publish</code>): the scheduler renders the next episode (MP4, 1080×1920), uploads it with <code>FILE_UPLOAD</code> and publishes it to the owner's account with title, privacy level and the AI-generated label.</li>
+  <li><strong>Content Posting API – Upload</strong> (<code>video.upload</code>): optional fallback that sends the video to the owner's TikTok inbox as a draft, so the owner can review and post it in the TikTok app.</li>
+</ol>
 
 <h2 id="terms">Terms of Service</h2>
 <p>Last updated: 7 November 2026</p>
@@ -36,16 +54,24 @@
   <li><strong>Contact:</strong> Questions about this policy can be sent to the owner at the e-mail address registered with the TikTok developer account.</li>
 </ul>
 
-<h2 id="callback">Authorization callback</h2>
-<div class="box">
-  <p>This page is also the redirect target for TikTok authorization. If you arrived here after clicking "Authorize" on TikTok, copy the complete address from your browser's address bar and paste it into the chat.</p>
-  <p id="code"></p>
-</div>
 <script>
+  var CLIENT_KEY = 'aw35692qt6j0xjsx';
+  var REDIRECT = 'https://adriankrau0103-wq.github.io/';
+  function rnd(){ return Math.random().toString(36).slice(2,10); }
+  document.getElementById('connectBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    var key = CLIENT_KEY;
+    try { var k = new URLSearchParams(location.search).get('client_key'); if (k) key = k; } catch(x){}
+    var u = 'https://www.tiktok.com/v2/auth/authorize/?client_key=' + encodeURIComponent(key)
+      + '&scope=user.info.basic,video.upload,video.publish&response_type=code&redirect_uri=' + encodeURIComponent(REDIRECT)
+      + '&state=' + rnd();
+    location.href = u;
+  });
   try{
-    var p=new URLSearchParams(location.search);
-    if(p.get('code')){document.getElementById('code').innerHTML='Authorization code received: <code>'+p.get('code').replace(/[<>&]/g,'')+'</code>';}
-    else if(p.get('error')){document.getElementById('code').textContent='Authorization was declined: '+p.get('error');}
+    var p = new URLSearchParams(location.search);
+    var s = document.getElementById('status');
+    if (p.get('code')) { s.innerHTML = '<span class="ok">✓ Authorization received.</span> Step 2 – the owner pastes this page\'s address into the scheduler, which exchanges the code for an access token and starts publishing on schedule.'; }
+    else if (p.get('error')) { s.textContent = 'Authorization was declined: ' + p.get('error'); }
   }catch(e){}
 </script>
 </body>
